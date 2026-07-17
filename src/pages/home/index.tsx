@@ -11,24 +11,24 @@ export function Home() {
             </div>
 
             <main className="flex flex-col items-center justify-center gap-4 mt-8 w-full max-w-md"> 
-                <section>
-                   <a href="https://github.com/marcostv" className="block w-full text-center bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition-colors">Website</a>
+                <section className="w-full">
+                   <a href="https://github.com/marcostv" className="block w-full text-center bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-600 transition-colors select-none transition-transform hover:scale-105">Website</a>
                 </section>
 
-                 <section>
-                   <a href="https://www.linkedin.com/in/marcostv" className="block w-full text-center bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition-colors">Portfolio</a>
+                <section className="w-full">
+                   <a href="https://www.linkedin.com/in/marcostv" className="block w-full text-center bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-600 transition-colors select-none transition-transform hover:scale-105">Portfolio</a>
                 </section>
 
-                <section>
-                   <a href="https://github.com/marcostv" className="block w-full text-center bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition-colors">GitHub</a>
+                <section className="w-full">
+                   <a href="https://github.com/marcostv" className="block w-full text-center bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-600 transition-colors select-none transition-transform hover:scale-105">GitHub</a>
                 </section>
 
-                <section>
-                   <a href="https://github.com/marcostv" className="block w-full text-center bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition-colors">Instagram</a>
+                <section className="w-full">
+                   <a href="https://github.com/marcostv" className="block w-full text-center bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-600 transition-colors select-none transition-transform hover:scale-105">Instagram</a>
                 </section>
 
-                <section>
-                   <a href="https://github.com/marcostv" className="block w-full text-center bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition-colors">Whatsapp</a>
+                <section className="w-full">
+                   <a href="https://github.com/marcostv" className="block w-full text-center bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-600 transition-colors select-none transition-transform hover:scale-105">Whatsapp</a>
                 </section>
 
             </main>
