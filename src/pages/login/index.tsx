@@ -1,7 +1,18 @@
 import { Link } from "react-router"
 import { Input } from "../../compents/Imput"
+import { useState, type FormEventHandler } from "react"
 
 export function Login() {
+
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+
+    const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+        e.preventDefault()
+        console.log("Email:", email)
+        console.log("Password:", password)
+    }
+
     return (
         <div className="flex w-full h-screen items-center justify-center flex-col">
             <Link to="/">
@@ -12,15 +23,19 @@ export function Login() {
                 </h1>
             </Link>
 
-            <form className="flex flex-col gap-4 w-full max-w-sm mt-8 p-2">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full max-w-sm mt-8 p-2">
                 <Input 
                     type="email"
                     placeholder="Digite seu email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                 />
 
                 <Input 
                     type="password"
-                    placeholder="Digite sua senha"
+                    placeholder="*******"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                 />
 
                 <button 
