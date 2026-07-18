@@ -1,5 +1,6 @@
 import { FaGithub, FaInstagram, FaLinkedin, FaShareNodes, FaWhatsapp, FaArrowRight } from "react-icons/fa6";
 import Social from "../../compents/Social";
+import ButtonSectionLink from "../../compents/ButtonSectionLInk";
 
 async function handleShare() {
     const shareUrl = window.location.href;
@@ -38,34 +39,18 @@ export function Home() {
             </div>
 
             <main className="mt-8 flex w-full max-w-md flex-col items-center justify-center gap-4">
-                <section className="w-full">
-                    <a href="https://marcostv.com" className="flex w-full items-center justify-between gap-2 text-center bg-[oklch(0.56_0.17_149.56)] text-white py-2 px-4 rounded-full hover:opacity-90 transition-all select-none hover:scale-105">
-                        <span>Website</span>
-                        <FaArrowRight    aria-hidden="true" />
-                    </a>
-                </section>
-
-                <section className="w-full">
-                    <a href="https://github.com/marcostv" className="flex w-full items-center justify-between gap-2 text-center bg-[oklch(0.56_0.17_149.56)] text-white py-2 px-4 rounded-full hover:opacity-90 transition-all select-none hover:scale-105">
-                        <span>Projeto Recente</span>
-                        <FaArrowRight    aria-hidden="true" />
-                    </a>
-                </section>
- 
-                <section className="w-full">
-                    <a href="https://www.linkedin.com/in/marcostv" className="flex w-full items-center justify-between gap-2 text-center bg-[oklch(0.56_0.17_149.56)] text-white py-2 px-4 rounded-full hover:opacity-90 transition-all select-none hover:scale-105">
-                        <span>Portfolio</span>
-                        <FaArrowRight    aria-hidden="true" />
-                    </a>
-                </section>
+               
+                <ButtonSectionLink url="http://marcostavares.dev.com.br">
+                    <span>Website</span>
+                    <FaArrowRight    aria-hidden="true" />
+                </ButtonSectionLink>
+    
 
                 <footer className="mt-3 flex w-full justify-center flex-row gap-4">
-
-                    <Social url="https://github.com/marcostv"><FaGithub aria-hidden="true" /></Social>
+                    <Social url="https://github.com/marcosdev82"><FaGithub aria-hidden="true" /></Social>
                     <Social url="https://github.com/marcostv"><FaInstagram aria-hidden="true" /></Social>
                     <Social url="https://github.com/marcostv"><FaWhatsapp aria-hidden="true" /></Social>
                     <Social url="https://www.linkedin.com/in/marcostv"><FaLinkedin aria-hidden="true" /></Social>
-          
                 </footer>
 
             </main>
