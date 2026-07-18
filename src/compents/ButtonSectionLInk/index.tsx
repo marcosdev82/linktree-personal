@@ -5,7 +5,7 @@ interface ButtonLinkProps{
     children: ReactNode;
 }
 
-export default function ButtonSectionLink({url, children}: ButtonLinkProps) {
+export function ButtonSectionLink({url, children}: ButtonLinkProps) {
    return  (
     <section className="w-full">
         <a  

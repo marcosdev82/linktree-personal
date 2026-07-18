@@ -5,7 +5,7 @@ interface SocialProps {
     children: ReactNode;
 }
 
-export default function Social({ url, children }: SocialProps) {
+export function Social({ url, children }: SocialProps) {
     return (
         <a  
             href={url}

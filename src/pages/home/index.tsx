@@ -1,6 +1,6 @@
 import { FaGithub, FaInstagram, FaLinkedin, FaShareNodes, FaWhatsapp, FaArrowRight } from "react-icons/fa6";
-import Social from "../../compents/Social";
-import ButtonSectionLink from "../../compents/ButtonSectionLInk";
+import { Social } from "../../compents/Social";
+import { ButtonSectionLink } from "../../compents/ButtonSectionLInk";
 
 async function handleShare() {
     const shareUrl = window.location.href;
