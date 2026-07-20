@@ -1,18 +1,37 @@
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
 import { Input } from "../../compents/Imput"
 import { useState, type FormEventHandler } from "react"
 
-// import { auth } from "../../services/firebaseConnection"
+// @ts-ignore
+import { auth } from "../../services/firebaseConnection"
+import { signInWithEmailAndPassword } from "firebase/auth"
 
 export function Login() {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const navigation = useNavigate()
 
     const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault()
-        console.log("Email:", email)
-        console.log("Password:", password)
+
+        if (email === "" || password === "") {
+            alert("Preencha todos os campos!")
+            return
+        }
+
+        signInWithEmailAndPassword(auth, email, password)
+            .then(() => {
+                // Signed in
+                console.log("User logged in:")
+                navigation("/admin", { replace: true })
+
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.error("Error logging in:", errorCode, errorMessage)
+            });
     }
 
     return (
