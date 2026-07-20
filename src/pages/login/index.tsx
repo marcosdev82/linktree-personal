@@ -10,13 +10,15 @@ export function Login() {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [feedback, setFeedback] = useState<string | null>(null)
     const navigation = useNavigate()
 
     const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault()
 
         if (email === "" || password === "") {
-            alert("Preencha todos os campos!")
+            setFeedback("Preencha todos os campos para continuar.")
+            setTimeout(() => setFeedback(null), 3000)
             return
         }
 
@@ -31,6 +33,8 @@ export function Login() {
                 const errorCode = error.code;
                 const errorMessage = error.message;
                 console.error("Error logging in:", errorCode, errorMessage)
+                setFeedback("E-mail ou senha inválidos. Tente novamente.")
+                setTimeout(() => setFeedback(null), 4000)
             });
     }
 
@@ -45,6 +49,12 @@ export function Login() {
             </Link>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full max-w-sm mt-8 p-2">
+                {feedback && (
+                    <div className="w-full rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700 shadow-sm animate-[pulse_0.8s_ease-in-out_1]">
+                        <span className="font-semibold">Atenção:</span> {feedback}
+                    </div>
+                )}
+
                 <Input 
                     type="email"
                     placeholder="Digite seu email"
