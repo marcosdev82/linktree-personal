@@ -1,7 +1,9 @@
+import { Header } from "../../compents/Header";
+
 export function Admin() {
     return (
-        <div>
-            <h1>Admin Page</h1>
+        <div className="flex w-full min-h-screen items-center flex-col pb-7 px-2">
+            <Header />
         </div>
     )
 }
