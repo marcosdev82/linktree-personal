@@ -138,6 +138,14 @@ export function Admin() {
         reader.readAsDataURL(file);
     }
 
+    function removeImage(field: "photoUrl" | "backgroundImageUrl") {
+        updateField(field, "");
+        setSavedMessage(field === "photoUrl" ? "Imagem removida." : "Imagem de fundo removida.");
+        window.setTimeout(() => {
+            setSavedMessage("");
+        }, 2500);
+    }
+
     function addButton() {
         setConfig((previous) => ({
             ...previous,
@@ -229,11 +237,27 @@ export function Admin() {
                             className="h-10 w-full rounded border border-gray-300 px-3"
                             placeholder="https://... ou escolha um arquivo"
                         />
+                        <div className="mt-2 flex flex-wrap gap-2">
+                            <label
+                                htmlFor="background-image-upload"
+                                className="inline-flex cursor-pointer items-center rounded bg-green-700 px-3 py-2 text-sm font-semibold text-white hover:opacity-90"
+                            >
+                                Alterar imagem
+                            </label>
+                            <button
+                                type="button"
+                                onClick={() => removeImage("backgroundImageUrl")}
+                                className="rounded border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+                            >
+                                Remover imagem
+                            </button>
+                        </div>
                         <input
+                            id="background-image-upload"
                             type="file"
                             accept="image/*"
                             onChange={handleBackgroundUpload}
-                            className="mt-1 text-sm text-gray-600 file:mr-3 file:rounded file:border-0 file:bg-green-700 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white"
+                            className="hidden"
                         />
                         {config.backgroundImageUrl && (
                             <div className="mt-2 h-24 rounded border border-gray-200 bg-gray-100" style={{ backgroundImage: `url("${config.backgroundImageUrl}")`, backgroundSize: "cover", backgroundPosition: "center" }} />
@@ -248,11 +272,27 @@ export function Admin() {
                             onChange={(event) => updateField("photoUrl", event.target.value)}
                             className="h-10 w-full rounded border border-gray-300 px-3"
                         />
+                        <div className="mt-2 flex flex-wrap gap-2">
+                            <label
+                                htmlFor="photo-image-upload"
+                                className="inline-flex cursor-pointer items-center rounded bg-green-700 px-3 py-2 text-sm font-semibold text-white hover:opacity-90"
+                            >
+                                Alterar imagem
+                            </label>
+                            <button
+                                type="button"
+                                onClick={() => removeImage("photoUrl")}
+                                className="rounded border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+                            >
+                                Remover imagem
+                            </button>
+                        </div>
                         <input
+                            id="photo-image-upload"
                             type="file"
                             accept="image/*"
                             onChange={handlePhotoUpload}
-                            className="mt-1 text-sm text-gray-600 file:mr-3 file:rounded file:border-0 file:bg-green-700 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white"
+                            className="hidden"
                         />
                         {config.photoUrl && (
                             <div className="mt-2 flex items-center gap-3 rounded border border-gray-200 bg-gray-50 p-2">
