@@ -1,6 +1,22 @@
 import { Header } from "../../compents/Header";
 import { useMemo, useState } from "react";
 import {
+    FaArrowRight,
+    FaBook,
+    FaCamera,
+    FaEnvelope,
+    FaFileLines,
+    FaGlobe,
+    FaGithub,
+    FaInstagram,
+    FaLink,
+    FaLinkedin,
+    FaMusic,
+    FaPlay,
+    FaRocket,
+    FaWhatsapp,
+} from "react-icons/fa6";
+import {
     getDefaultLinktreeConfig,
     getLinktreeConfig,
     saveLinktreeConfig,
@@ -28,6 +44,23 @@ const effects: Array<{ value: ButtonEffect; label: string }> = [
     { value: "glow", label: "Glow" },
 ];
 
+const buttonIconOptions = [
+    { value: "arrow-right", label: "Seta", Icon: FaArrowRight },
+    { value: "globe", label: "Globo", Icon: FaGlobe },
+    { value: "link", label: "Link", Icon: FaLink },
+    { value: "github", label: "GitHub", Icon: FaGithub },
+    { value: "instagram", label: "Instagram", Icon: FaInstagram },
+    { value: "linkedin", label: "LinkedIn", Icon: FaLinkedin },
+    { value: "whatsapp", label: "WhatsApp", Icon: FaWhatsapp },
+    { value: "envelope", label: "E-mail", Icon: FaEnvelope },
+    { value: "book", label: "Livro", Icon: FaBook },
+    { value: "play", label: "Play", Icon: FaPlay },
+    { value: "camera", label: "Camera", Icon: FaCamera },
+    { value: "music", label: "Música", Icon: FaMusic },
+    { value: "file", label: "Arquivo", Icon: FaFileLines },
+    { value: "rocket", label: "Foguete", Icon: FaRocket },
+];
+
 export function Admin() {
     const [config, setConfig] = useState<LinktreeConfig>(() => getLinktreeConfig());
     const [savedMessage, setSavedMessage] = useState("");
@@ -50,6 +83,7 @@ export function Admin() {
                     id: `button-${Date.now()}`,
                     label: "Novo botao",
                     url: "https://",
+                    icon: "arrow-right",
                 },
             ],
         }));
@@ -68,7 +102,7 @@ export function Admin() {
         });
     }
 
-    function updateButton(id: string, field: "label" | "url", value: string) {
+    function updateButton(id: string, field: "label" | "url" | "icon", value: string) {
         setConfig((previous) => ({
             ...previous,
             buttons: previous.buttons.map((button) =>
@@ -278,6 +312,30 @@ export function Admin() {
                                     className="h-10 w-full rounded border border-gray-300 px-3"
                                     placeholder="https://"
                                 />
+
+                                <label className="flex flex-col gap-1 text-sm text-gray-700 md:col-span-2">
+                                    Ícone do botão
+                                    <div className="flex items-center gap-2">
+                                        <select
+                                            value={button.icon ?? "arrow-right"}
+                                            onChange={(event) => updateButton(button.id, "icon", event.target.value)}
+                                            className="h-10 w-full rounded border border-gray-300 px-3"
+                                        >
+                                            {buttonIconOptions.map((iconOption) => (
+                                                <option key={iconOption.value} value={iconOption.value}>
+                                                    {iconOption.label}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <div className="flex h-10 w-10 items-center justify-center rounded border border-gray-300 bg-gray-50 text-gray-700">
+                                            {(() => {
+                                                const selectedIcon = buttonIconOptions.find((iconOption) => iconOption.value === (button.icon ?? "arrow-right"));
+                                                const Icon = selectedIcon?.Icon ?? FaArrowRight;
+                                                return <Icon aria-hidden="true" />;
+                                            })()}
+                                        </div>
+                                    </div>
+                                </label>
                             </div>
                         </div>
                     ))}

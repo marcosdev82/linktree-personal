@@ -4,6 +4,7 @@ export interface LinkButton {
   id: string;
   label: string;
   url: string;
+  icon: string;
 }
 
 export interface LinktreeConfig {
@@ -44,6 +45,7 @@ const defaultConfig: LinktreeConfig = {
       id: "button-1",
       label: "Website",
       url: "http://marcostavares.dev.com.br",
+      icon: "globe",
     },
   ],
 };
@@ -66,8 +68,9 @@ function sanitizeButtons(value: unknown): LinkButton[] {
       const id = typeof item.id === "string" && item.id ? item.id : `button-${index + 1}`;
       const label = typeof item.label === "string" ? item.label : "Novo botao";
       const url = typeof item.url === "string" ? item.url : "https://";
+      const icon = typeof item.icon === "string" && item.icon ? item.icon : "arrow-right";
 
-      return { id, label, url };
+      return { id, label, url, icon };
     })
     .filter((item): item is LinkButton => item !== null);
 

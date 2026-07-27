@@ -1,7 +1,24 @@
-import { FaGithub, FaInstagram, FaLinkedin, FaShareNodes, FaWhatsapp, FaArrowRight } from "react-icons/fa6";
+import { FaArrowRight, FaBook, FaCamera, FaEnvelope, FaFileLines, FaGlobe, FaGithub, FaInstagram, FaLink, FaLinkedin, FaMusic, FaPlay, FaRocket, FaShareNodes, FaWhatsapp } from "react-icons/fa6";
 import { Social } from "../../compents/Social";
 import { useMemo, useState, type CSSProperties } from "react";
 import { getLinktreeConfig, type ButtonEffect } from "../../services/linktreeConfig";
+
+const buttonIconComponents = {
+    "arrow-right": FaArrowRight,
+    globe: FaGlobe,
+    link: FaLink,
+    github: FaGithub,
+    instagram: FaInstagram,
+    linkedin: FaLinkedin,
+    whatsapp: FaWhatsapp,
+    envelope: FaEnvelope,
+    book: FaBook,
+    play: FaPlay,
+    camera: FaCamera,
+    music: FaMusic,
+    file: FaFileLines,
+    rocket: FaRocket,
+};
 
 function getButtonEffectStyle(effect: ButtonEffect, isHovered: boolean): CSSProperties {
     if (!isHovered) {
@@ -103,8 +120,15 @@ export function Home() {
                                     ...getButtonEffectStyle(config.buttonEffect, isHovered),
                                 }}
                             >
-                                <span>{button.label}</span>
-                                <FaArrowRight aria-hidden="true" />
+                                <div className="flex items-center gap-3">
+                                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/15 text-sm">
+                                        {(() => {
+                                            const Icon = buttonIconComponents[button.icon as keyof typeof buttonIconComponents] ?? FaArrowRight;
+                                            return <Icon aria-hidden="true" />;
+                                        })()}
+                                    </span>
+                                    <span>{button.label}</span>
+                                </div>
                             </a>
                         </section>
                     );
