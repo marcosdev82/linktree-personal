@@ -1,5 +1,5 @@
 import { Header } from "../../compents/Header";
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ChangeEvent } from "react";
 import {
     FaArrowRight,
     FaBook,
@@ -72,6 +72,35 @@ export function Admin() {
 
     function updateField<K extends keyof LinktreeConfig>(field: K, value: LinktreeConfig[K]) {
         setConfig((previous) => ({ ...previous, [field]: value }));
+    }
+
+    function handlePhotoUpload(event: ChangeEvent<HTMLInputElement>) {
+        const file = event.target.files?.[0];
+
+        if (!file) {
+            return;
+        }
+
+        if (!file.type.startsWith("image/")) {
+            setSavedMessage("Selecione um arquivo de imagem.");
+            window.setTimeout(() => {
+                setSavedMessage("");
+            }, 2500);
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = () => {
+            const result = reader.result;
+            if (typeof result === "string") {
+                updateField("photoUrl", result);
+                setSavedMessage("Imagem carregada com sucesso.");
+                window.setTimeout(() => {
+                    setSavedMessage("");
+                }, 2500);
+            }
+        };
+        reader.readAsDataURL(file);
     }
 
     function addButton() {
@@ -157,13 +186,29 @@ export function Admin() {
                     </label>
 
                     <label className="flex flex-col gap-1 text-sm text-gray-700 md:col-span-2">
-                        URL da foto
+                        URL da foto ou upload
                         <input
                             type="text"
                             value={config.photoUrl}
                             onChange={(event) => updateField("photoUrl", event.target.value)}
                             className="h-10 w-full rounded border border-gray-300 px-3"
                         />
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handlePhotoUpload}
+                            className="mt-1 text-sm text-gray-600 file:mr-3 file:rounded file:border-0 file:bg-green-700 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white"
+                        />
+                        {config.photoUrl && (
+                            <div className="mt-2 flex items-center gap-3 rounded border border-gray-200 bg-gray-50 p-2">
+                                <img
+                                    src={config.photoUrl}
+                                    alt="Preview da thumbnail"
+                                    className="h-16 w-16 rounded-full object-cover"
+                                />
+                                <span className="text-xs text-gray-600">Preview da imagem</span>
+                            </div>
+                        )}
                     </label>
 
                     <label className="flex flex-col gap-1 text-sm text-gray-700">
