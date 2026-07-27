@@ -10,6 +10,7 @@ export interface LinkButton {
 export interface LinktreeConfig {
   backgroundFrom: string;
   backgroundTo: string;
+  backgroundImageUrl: string;
   photoUrl: string;
   name: string;
   description: string;
@@ -29,6 +30,7 @@ const STORAGE_KEY = "@linktree:config";
 const defaultConfig: LinktreeConfig = {
   backgroundFrom: "#408F60",
   backgroundTo: "#9FE9C9",
+  backgroundImageUrl: "",
   photoUrl: "https://avatars.githubusercontent.com/u/10318700?v=4",
   name: "@marcostv",
   description: "Veja meus trabalhos e descubra como posso ajudar voce.",
@@ -100,6 +102,10 @@ export function getLinktreeConfig(): LinktreeConfig {
       backgroundFrom:
         typeof parsed.backgroundFrom === "string" ? parsed.backgroundFrom : defaultConfig.backgroundFrom,
       backgroundTo: typeof parsed.backgroundTo === "string" ? parsed.backgroundTo : defaultConfig.backgroundTo,
+      backgroundImageUrl:
+        typeof parsed.backgroundImageUrl === "string"
+          ? parsed.backgroundImageUrl
+          : defaultConfig.backgroundImageUrl,
       photoUrl: typeof parsed.photoUrl === "string" ? parsed.photoUrl : defaultConfig.photoUrl,
       name: typeof parsed.name === "string" ? parsed.name : defaultConfig.name,
       description: typeof parsed.description === "string" ? parsed.description : defaultConfig.description,

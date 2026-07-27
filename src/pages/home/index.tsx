@@ -74,13 +74,25 @@ async function handleShare() {
 export function Home() {    
     const [hoveredButtonId, setHoveredButtonId] = useState<string | null>(null);
     const config = useMemo(() => getLinktreeConfig(), []);
-    const pageBackground = useMemo(
-        () => `linear-gradient(180deg, ${config.backgroundFrom} 0%, ${config.backgroundTo} 100%)`,
-        [config.backgroundFrom, config.backgroundTo]
-    );
+    const pageBackground = useMemo(() => {
+        const gradient = `linear-gradient(180deg, ${config.backgroundFrom} 0%, ${config.backgroundTo} 100%)`;
+
+        return config.backgroundImageUrl
+            ? {
+                background: `${gradient}, url("${config.backgroundImageUrl}")`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+                backgroundColor: config.backgroundFrom,
+            }
+            : {
+                background: gradient,
+                backgroundColor: config.backgroundFrom,
+            };
+    }, [config.backgroundFrom, config.backgroundTo, config.backgroundImageUrl]);
 
     return (
-        <div className="relative flex flex-col w-full items-center justify-center min-h-screen p-2" style={{ background: pageBackground }}>
+        <div className="relative flex flex-col w-full items-center justify-center min-h-screen p-2" style={pageBackground}>
             <button
                 type="button"
                 onClick={handleShare}

@@ -65,10 +65,16 @@ export function Admin() {
     const [config, setConfig] = useState<LinktreeConfig>(() => getLinktreeConfig());
     const [savedMessage, setSavedMessage] = useState("");
 
-    const previewBackground = useMemo(
-        () => `linear-gradient(180deg, ${config.backgroundFrom} 0%, ${config.backgroundTo} 100%)`,
-        [config.backgroundFrom, config.backgroundTo]
-    );
+    const previewBackground = useMemo(() => {
+        const gradient = `linear-gradient(180deg, ${config.backgroundFrom} 0%, ${config.backgroundTo} 100%)`;
+
+        return {
+            background: config.backgroundImageUrl ? `${gradient}, url("${config.backgroundImageUrl}")` : gradient,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+        };
+    }, [config.backgroundFrom, config.backgroundTo, config.backgroundImageUrl]);
 
     function updateField<K extends keyof LinktreeConfig>(field: K, value: LinktreeConfig[K]) {
         setConfig((previous) => ({ ...previous, [field]: value }));
@@ -95,6 +101,35 @@ export function Admin() {
             if (typeof result === "string") {
                 updateField("photoUrl", result);
                 setSavedMessage("Imagem carregada com sucesso.");
+                window.setTimeout(() => {
+                    setSavedMessage("");
+                }, 2500);
+            }
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function handleBackgroundUpload(event: ChangeEvent<HTMLInputElement>) {
+        const file = event.target.files?.[0];
+
+        if (!file) {
+            return;
+        }
+
+        if (!file.type.startsWith("image/")) {
+            setSavedMessage("Selecione um arquivo de imagem de fundo.");
+            window.setTimeout(() => {
+                setSavedMessage("");
+            }, 2500);
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = () => {
+            const result = reader.result;
+            if (typeof result === "string") {
+                updateField("backgroundImageUrl", result);
+                setSavedMessage("Imagem de fundo carregada com sucesso.");
                 window.setTimeout(() => {
                     setSavedMessage("");
                 }, 2500);
@@ -183,6 +218,26 @@ export function Admin() {
                             onChange={(event) => updateField("backgroundTo", event.target.value)}
                             className="h-10 w-full cursor-pointer rounded border border-gray-300 bg-white"
                         />
+                    </label>
+
+                    <label className="flex flex-col gap-1 text-sm text-gray-700 md:col-span-2">
+                        Imagem de fundo (opcional)
+                        <input
+                            type="text"
+                            value={config.backgroundImageUrl}
+                            onChange={(event) => updateField("backgroundImageUrl", event.target.value)}
+                            className="h-10 w-full rounded border border-gray-300 px-3"
+                            placeholder="https://... ou escolha um arquivo"
+                        />
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleBackgroundUpload}
+                            className="mt-1 text-sm text-gray-600 file:mr-3 file:rounded file:border-0 file:bg-green-700 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white"
+                        />
+                        {config.backgroundImageUrl && (
+                            <div className="mt-2 h-24 rounded border border-gray-200 bg-gray-100" style={{ backgroundImage: `url("${config.backgroundImageUrl}")`, backgroundSize: "cover", backgroundPosition: "center" }} />
+                        )}
                     </label>
 
                     <label className="flex flex-col gap-1 text-sm text-gray-700 md:col-span-2">
@@ -424,7 +479,7 @@ export function Admin() {
 
                 <div
                     className="mt-6 rounded-xl border border-gray-200 p-4"
-                    style={{ background: previewBackground }}
+                    style={previewBackground}
                 >
                     <p className="text-sm font-semibold text-white/90">Preview do background</p>
                     <div className="mt-2 h-16 rounded-lg bg-white/20" />
