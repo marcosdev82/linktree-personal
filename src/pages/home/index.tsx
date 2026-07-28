@@ -1,7 +1,7 @@
 import { FaArrowRight, FaBook, FaCamera, FaEnvelope, FaFileLines, FaGlobe, FaGithub, FaInstagram, FaLink, FaLinkedin, FaMusic, FaPlay, FaRocket, FaShareNodes, FaWhatsapp } from "react-icons/fa6";
 import { Social } from "../../compents/Social";
-import { useMemo, useState, type CSSProperties } from "react";
-import { getLinktreeConfig, type ButtonEffect } from "../../services/linktreeConfig";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import { getLinktreeConfig, loadLinktreeConfigFromFirebase, type ButtonEffect, type LinktreeConfig } from "../../services/linktreeConfig";
 
 const buttonIconComponents = {
     "arrow-right": FaArrowRight,
@@ -73,20 +73,38 @@ async function handleShare() {
 
 export function Home() {    
     const [hoveredButtonId, setHoveredButtonId] = useState<string | null>(null);
-    const config = useMemo(() => getLinktreeConfig(), []);
+    const [config, setConfig] = useState<LinktreeConfig>(() => getLinktreeConfig());
+
+    useEffect(() => {
+        let isMounted = true;
+
+        void loadLinktreeConfigFromFirebase().then((remoteConfig) => {
+            if (isMounted) {
+                setConfig(remoteConfig);
+            }
+        });
+
+        return () => {
+            isMounted = false;
+        };
+    }, []);
+
     const pageBackground = useMemo(() => {
         const gradient = `linear-gradient(180deg, ${config.backgroundFrom} 0%, ${config.backgroundTo} 100%)`;
 
         return config.backgroundImageUrl
             ? {
-                background: `${gradient}, url("${config.backgroundImageUrl}")`,
+                backgroundImage: `${gradient}, url("${config.backgroundImageUrl}")`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
                 backgroundColor: config.backgroundFrom,
             }
             : {
-                background: gradient,
+                backgroundImage: gradient,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
                 backgroundColor: config.backgroundFrom,
             };
     }, [config.backgroundFrom, config.backgroundTo, config.backgroundImageUrl]);

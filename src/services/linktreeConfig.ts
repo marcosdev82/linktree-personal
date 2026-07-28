@@ -1,3 +1,6 @@
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "./firebaseConnection";
+
 export type ButtonEffect = "none" | "scale" | "lift" | "glow";
 
 export interface LinkButton {
@@ -26,6 +29,9 @@ export interface LinktreeConfig {
 }
 
 const STORAGE_KEY = "@linktree:config";
+const FIRESTORE_DOC = (import.meta.env.VITE_FIRESTORE_COLLECTION as string | undefined) ?? "Settings";
+const FIRESTORE_KEY =
+  (import.meta.env.VITE_FIRESTORE_DOCUMENT_ID as string | undefined) ?? "r0ciGUlZFhbgSQvofxh0";
 
 const defaultConfig: LinktreeConfig = {
   backgroundFrom: "#408F60",
@@ -86,6 +92,55 @@ export function getDefaultLinktreeConfig(): LinktreeConfig {
   };
 }
 
+function parseStoredConfig(value: unknown): LinktreeConfig {
+  if (!isObject(value)) {
+    return getDefaultLinktreeConfig();
+  }
+
+  return {
+    backgroundFrom:
+      typeof value.backgroundFrom === "string" ? value.backgroundFrom : defaultConfig.backgroundFrom,
+    backgroundTo: typeof value.backgroundTo === "string" ? value.backgroundTo : defaultConfig.backgroundTo,
+    backgroundImageUrl:
+      typeof value.backgroundImageUrl === "string"
+        ? value.backgroundImageUrl
+        : defaultConfig.backgroundImageUrl,
+    photoUrl: typeof value.photoUrl === "string" ? value.photoUrl : defaultConfig.photoUrl,
+    name: typeof value.name === "string" ? value.name : defaultConfig.name,
+    description: typeof value.description === "string" ? value.description : defaultConfig.description,
+    buttonGap: typeof value.buttonGap === "number" ? value.buttonGap : defaultConfig.buttonGap,
+    buttonColor: typeof value.buttonColor === "string" ? value.buttonColor : defaultConfig.buttonColor,
+    buttonHoverColor:
+      typeof value.buttonHoverColor === "string"
+        ? value.buttonHoverColor
+        : defaultConfig.buttonHoverColor,
+    buttonTextColor:
+      typeof value.buttonTextColor === "string"
+        ? value.buttonTextColor
+        : defaultConfig.buttonTextColor,
+    buttonBorderRadius:
+      typeof value.buttonBorderRadius === "number"
+        ? value.buttonBorderRadius
+        : defaultConfig.buttonBorderRadius,
+    buttonBorderWidth:
+      typeof value.buttonBorderWidth === "number"
+        ? value.buttonBorderWidth
+        : defaultConfig.buttonBorderWidth,
+    buttonBorderColor:
+      typeof value.buttonBorderColor === "string"
+        ? value.buttonBorderColor
+        : defaultConfig.buttonBorderColor,
+    buttonEffect:
+      value.buttonEffect === "none" ||
+      value.buttonEffect === "scale" ||
+      value.buttonEffect === "lift" ||
+      value.buttonEffect === "glow"
+        ? value.buttonEffect
+        : defaultConfig.buttonEffect,
+    buttons: sanitizeButtons(value.buttons),
+  };
+}
+
 export function getLinktreeConfig(): LinktreeConfig {
   const raw = localStorage.getItem(STORAGE_KEY);
   if (!raw) {
@@ -93,59 +148,40 @@ export function getLinktreeConfig(): LinktreeConfig {
   }
 
   try {
-    const parsed = JSON.parse(raw) as unknown;
-    if (!isObject(parsed)) {
-      return getDefaultLinktreeConfig();
-    }
-
-    return {
-      backgroundFrom:
-        typeof parsed.backgroundFrom === "string" ? parsed.backgroundFrom : defaultConfig.backgroundFrom,
-      backgroundTo: typeof parsed.backgroundTo === "string" ? parsed.backgroundTo : defaultConfig.backgroundTo,
-      backgroundImageUrl:
-        typeof parsed.backgroundImageUrl === "string"
-          ? parsed.backgroundImageUrl
-          : defaultConfig.backgroundImageUrl,
-      photoUrl: typeof parsed.photoUrl === "string" ? parsed.photoUrl : defaultConfig.photoUrl,
-      name: typeof parsed.name === "string" ? parsed.name : defaultConfig.name,
-      description: typeof parsed.description === "string" ? parsed.description : defaultConfig.description,
-      buttonGap:
-        typeof parsed.buttonGap === "number" ? parsed.buttonGap : defaultConfig.buttonGap,
-      buttonColor: typeof parsed.buttonColor === "string" ? parsed.buttonColor : defaultConfig.buttonColor,
-      buttonHoverColor:
-        typeof parsed.buttonHoverColor === "string"
-          ? parsed.buttonHoverColor
-          : defaultConfig.buttonHoverColor,
-      buttonTextColor:
-        typeof parsed.buttonTextColor === "string"
-          ? parsed.buttonTextColor
-          : defaultConfig.buttonTextColor,
-      buttonBorderRadius:
-        typeof parsed.buttonBorderRadius === "number"
-          ? parsed.buttonBorderRadius
-          : defaultConfig.buttonBorderRadius,
-      buttonBorderWidth:
-        typeof parsed.buttonBorderWidth === "number"
-          ? parsed.buttonBorderWidth
-          : defaultConfig.buttonBorderWidth,
-      buttonBorderColor:
-        typeof parsed.buttonBorderColor === "string"
-          ? parsed.buttonBorderColor
-          : defaultConfig.buttonBorderColor,
-      buttonEffect:
-        parsed.buttonEffect === "none" ||
-        parsed.buttonEffect === "scale" ||
-        parsed.buttonEffect === "lift" ||
-        parsed.buttonEffect === "glow"
-          ? parsed.buttonEffect
-          : defaultConfig.buttonEffect,
-      buttons: sanitizeButtons(parsed.buttons),
-    };
+    return parseStoredConfig(JSON.parse(raw));
   } catch {
     return getDefaultLinktreeConfig();
   }
 }
 
-export function saveLinktreeConfig(config: LinktreeConfig): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+export async function loadLinktreeConfigFromFirebase(): Promise<LinktreeConfig> {
+  try {
+    const snapshot = await getDoc(doc(db, FIRESTORE_DOC, FIRESTORE_KEY));
+
+    if (!snapshot.exists()) {
+      const fallbackConfig = getLinktreeConfig();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(fallbackConfig));
+      return fallbackConfig;
+    }
+
+    const config = parseStoredConfig(snapshot.data());
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+    return config;
+  } catch (error) {
+    console.error("Erro ao carregar configuracao do Firebase:", error);
+    return getLinktreeConfig();
+  }
+}
+
+export async function saveLinktreeConfig(config: LinktreeConfig): Promise<void> {
+  try {
+    await setDoc(doc(db, FIRESTORE_DOC, FIRESTORE_KEY), config);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Erro desconhecido";
+    const target = `${FIRESTORE_DOC}/${FIRESTORE_KEY}`;
+    const detailedMessage = `Falha ao salvar no Firebase (${target}): ${message}`;
+    console.error(detailedMessage, error);
+    throw new Error(detailedMessage);
+  }
 }
