@@ -3,7 +3,7 @@ import { Input } from "../../compents/Imput"
 import { useState, type FormEventHandler } from "react"
 
 // @ts-ignore
-import { auth } from "../../lib/firebaseConnection"
+import { auth } from "../../services/firebaseConnection"
 import { signInWithEmailAndPassword } from "firebase/auth"
 
 export function Login() {

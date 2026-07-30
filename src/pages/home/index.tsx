@@ -1,7 +1,7 @@
 import { FaArrowRight, FaBook, FaCamera, FaEnvelope, FaFileLines, FaGlobe, FaGithub, FaInstagram, FaLink, FaLinkedin, FaMusic, FaPlay, FaRocket, FaShareNodes, FaWhatsapp } from "react-icons/fa6";
 import { Social } from "../../compents/Social";
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
-import { getLinktreeConfig, loadLinktreeConfigFromFirebase, type ButtonEffect, type LinktreeConfig } from "../../lib/firebase";
+import { getLinktreeConfig, loadLinktreeConfigFromFirebase, type ButtonEffect, type LinktreeConfig } from "../../services/firebase";
 
 const buttonIconComponents = {
     "arrow-right": FaArrowRight,
