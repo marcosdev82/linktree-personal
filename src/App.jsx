@@ -11,6 +11,7 @@ import { Private } from './routes/Private';
 import { Header } from './compents/Header';
 import { Container } from './compents/Layout/Container';
 import { NaviSidebar } from './compents/NavSidebar';
+import { Preview } from './compents/Preview';
 
 function AppLayout() {
   return (
@@ -19,6 +20,7 @@ function AppLayout() {
       <Container>
         <NaviSidebar />
         <Outlet />
+        <Preview />
       </Container>
     </>
   );

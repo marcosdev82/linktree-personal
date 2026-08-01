@@ -11,7 +11,13 @@ import { fetchCurrentUser, updateCurrentUserProfile } from "../../services/auth"
 // };
 
 export function ProfilePage() {
-    const [profile, setProfile] = useState("");
+    const [profile, setProfile] = useState({
+        _id: "",
+        name: "",
+        email: "",
+        avatar: "",
+        bio: "",
+    });
     const [saved, setSaved] = useState(false);
     const [saving, setSaving] = useState(false);
     const [avatarFile, setAvatarFile] = useState(null);
@@ -115,7 +121,7 @@ export function ProfilePage() {
     }
 
     return (
-        <section className="w-full max-w-3xl rounded-2xl border border-primary-100 bg-secondary-white p-6 shadow-lg">
+        <section className="w-full max-w-5xl  p-6">
             <header className="mb-6 border-b border-primary-100 pb-4">
                 <h1 className="text-2xl font-black text-primary-900">Configurar Perfil</h1>
                 <p className="mt-1 text-sm text-secondary-gray">
@@ -123,60 +129,63 @@ export function ProfilePage() {
                 </p>
             </header>
 
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_290px]">
+                <div className="space-y-4">
+                    <div>
+                        <label className="mb-1 block text-sm font-semibold text-primary-900">Nome</label>
+                        <input
+                            type="text"
+                            name="name"
+                            value={profile.name}
+                            onChange={handleChange}
+                            className="h-11 w-full rounded-lg border border-secondary-lightGray bg-secondary-white px-3 text-sm text-secondary-black focus:border-primary-500 focus:outline-none"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="mb-1 block text-sm font-semibold text-primary-900">E-mail</label>
+                        <input
+                            type="email"
+                            name="email"
+                            value={profile.email}
+                            onChange={handleChange}
+                            className="h-11 w-full rounded-lg border border-secondary-lightGray bg-secondary-white px-3 text-sm text-secondary-black focus:border-primary-500 focus:outline-none"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="mb-1 block text-sm font-semibold text-primary-900">Bio</label>
+                        <textarea
+                            name="bio"
+                            rows={6}
+                            value={profile.bio}
+                            onChange={handleChange}
+                            className="w-full rounded-lg border border-secondary-lightGray bg-secondary-white px-3 py-2 text-sm text-secondary-black focus:border-primary-500 focus:outline-none"
+                        />
+                    </div>
+
+                    <div className="flex items-center justify-between gap-3 pt-2">
+                        <p className={`text-sm ${saved ? "font-medium text-secondary-green" : "text-secondary-gray"}`}>
+                            {feedbackMessage || "Nenhuma alteração salva ainda."}
+                        </p>
+
+                        <button
+                            type="submit"
+                            disabled={saving}
+                            className="h-11 rounded-xl bg-primary-900 px-5 text-sm font-bold text-secondary-white transition-colors hover:bg-primary-700"
+                        >
+                            {saving ? "Salvando..." : "Salvar alterações"}
+                        </button>
+                    </div>
+                </div>
+
                 <UploadAvatar
                     avatar={profile.avatar}
                     previewUrl={avatarPreviewUrl}
                     onFileChange={handleFileChange}
                     onRemoveImage={handleRemoveImage}
+                    className="lg:sticky lg:top-20"
                 />
-
-                <div>
-                    <label className="mb-1 block text-sm font-semibold text-primary-900">Nome</label>
-                    <input
-                        type="text"
-                        name="name"
-                        value={profile.name}
-                        onChange={handleChange}
-                        className="h-11 w-full rounded-lg border border-secondary-lightGray bg-secondary-white px-3 text-sm text-secondary-black focus:border-primary-500 focus:outline-none"
-                    />
-                </div>
-
-                <div>
-                    <label className="mb-1 block text-sm font-semibold text-primary-900">E-mail</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={profile.email}
-                        onChange={handleChange}
-                        className="h-11 w-full rounded-lg border border-secondary-lightGray bg-secondary-white px-3 text-sm text-secondary-black focus:border-primary-500 focus:outline-none"
-                    />
-                </div>
-
-                <div className="md:col-span-2">
-                    <label className="mb-1 block text-sm font-semibold text-primary-900">Bio</label>
-                    <textarea
-                        name="bio"
-                        rows={4}
-                        value={profile.bio}
-                        onChange={handleChange}
-                        className="w-full rounded-lg border border-secondary-lightGray bg-secondary-white px-3 py-2 text-sm text-secondary-black focus:border-primary-500 focus:outline-none"
-                    />
-                </div>
-
-                <div className="md:col-span-2 flex items-center justify-between gap-3 pt-2">
-                    <p className={`text-sm ${saved ? "font-medium text-secondary-green" : "text-secondary-gray"}`}>
-                        {feedbackMessage || "Nenhuma alteração salva ainda."}
-                    </p>
-
-                    <button
-                        type="submit"
-                        disabled={saving}
-                        className="h-11 rounded-xl bg-primary-900 px-5 text-sm font-bold text-secondary-white transition-colors hover:bg-primary-700"
-                    >
-                        {saving ? "Salvando..." : "Salvar alterações"}
-                    </button>
-                </div>
             </form>
         </section>
     );

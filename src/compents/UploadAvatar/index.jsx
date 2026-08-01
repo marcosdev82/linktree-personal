@@ -6,15 +6,15 @@ function resolveAvatarUrl(avatar) {
   return `${API_BASE_URL}/images/users/${avatar}`;
 }
 
-export function UploadAvatar({ avatar, previewUrl, onFileChange, onRemoveImage }) {
+export function UploadAvatar({ avatar, previewUrl, onFileChange, onRemoveImage, className = "" }) {
   const imageSrc = previewUrl || resolveAvatarUrl(avatar);
 
   return (
-    <div className="md:col-span-2">
+    <aside className={className}>
       <label className="mb-2 block text-sm font-semibold text-primary-900">Foto de perfil</label>
 
-      <div className="flex items-center gap-4">
-        <div className="h-20 w-20 overflow-hidden rounded-full border-2 border-primary-200 bg-secondary-white">
+      <div className="flex flex-col items-center gap-4 rounded-xl border border-primary-100 bg-primary-50/40 p-4">
+        <div className="h-28 w-28 overflow-hidden rounded-full border-2 border-primary-200 bg-secondary-white">
           {imageSrc ? (
             <img src={imageSrc} alt="Avatar do perfil" className="h-full w-full object-cover" />
           ) : (
@@ -24,7 +24,7 @@ export function UploadAvatar({ avatar, previewUrl, onFileChange, onRemoveImage }
           )}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex w-full flex-col items-stretch gap-2">
           <label className="inline-flex h-10 cursor-pointer items-center rounded-lg bg-primary-900 px-4 text-sm font-semibold text-secondary-white transition-colors hover:bg-primary-700">
             Alterar imagem
             <input
@@ -39,7 +39,7 @@ export function UploadAvatar({ avatar, previewUrl, onFileChange, onRemoveImage }
             <button
               type="button"
               onClick={onRemoveImage}
-              className="inline-flex h-10 items-center rounded-lg border border-secondary-lightGray px-4 text-sm font-semibold text-secondary-gray transition-colors hover:border-secondary-red hover:text-secondary-red"
+              className="inline-flex h-10 items-center justify-center rounded-lg border border-secondary-lightGray px-4 text-sm font-semibold text-secondary-gray transition-colors hover:border-secondary-red hover:text-secondary-red"
             >
               Remover
             </button>
@@ -48,6 +48,6 @@ export function UploadAvatar({ avatar, previewUrl, onFileChange, onRemoveImage }
       </div>
 
       <p className="mt-2 text-xs text-secondary-gray">Formatos aceitos: JPG, JPEG e PNG.</p>
-    </div>
+    </aside>
   );
 }
