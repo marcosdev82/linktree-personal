@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router"
 import { Input } from "../../compents/Imput"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
@@ -25,7 +25,20 @@ export function Login() {
     })
 
     const [feedback, setFeedback] = useState(null)
+    const [shake, setShake] = useState(false)
+    const shakeTimeoutRef = useRef(null)
     const navigation = useNavigate()
+
+    function triggerShake() {
+        setShake(false)
+        setShake(true)
+
+        if (shakeTimeoutRef.current) {
+            window.clearTimeout(shakeTimeoutRef.current)
+        }
+
+        shakeTimeoutRef.current = window.setTimeout(() => setShake(false), 450)
+    }
 
     const onSubmit = ({ email, password }) => {
         loginWithEmailAndPassword(email, password)
@@ -39,6 +52,7 @@ export function Login() {
                 const errorMessage = error.message;
                 console.error("Error logging in:", errorCode, errorMessage)
                 setFeedback("E-mail ou senha inválidos. Tente novamente.")
+                triggerShake()
                 setTimeout(() => setFeedback(null), 4000)
             });
     }
@@ -46,7 +60,7 @@ export function Login() {
     return (
         <div className="min-h-screen w-full bg-linear-to-br from-primary-900 via-primary-700 to-primary-500 px-4 py-10">
             <div className="mx-auto flex min-h-[calc(100vh-5rem)] w-full max-w-md items-center justify-center">
-                <div className="w-full rounded-3xl border border-secondary-white/15 bg-secondary-white/95 p-8 shadow-2xl shadow-black/20 backdrop-blur-sm">
+                <div className={`w-full rounded-3xl border border-secondary-white/15 bg-secondary-white/95 p-8 shadow-2xl shadow-black/20 backdrop-blur-sm ${shake ? "animate-[shake_0.45s_ease-in-out_1]" : ""}`}>
                     <Link to="/" className="block text-center">
                         <h1 className="flex items-center justify-center text-4xl font-black text-secondary-black">
                             Pixel<span className="bg-linear-to-r from-primary-700 to-primary-300 bg-clip-text text-transparent">
