@@ -3,8 +3,10 @@ import { createBrowserRouter, Outlet, RouterProvider } from 'react-router';
 import { Home } from './pages/home';
 import { Admin } from './pages/admin';
 import { Login } from './pages/login';
+import { Register } from './pages/register';
 import { Networks } from './pages/networks';
 import { Aparence } from './pages/aparence';
+import { ProfilePage } from './pages/profile';
 import { Private } from './routes/Private';
 import { Header } from './compents/Header';
 import { Container } from './compents/Layout/Container';
@@ -47,6 +49,12 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: '/admin/profile',
+        element: (
+            <ProfilePage />
+        ),
+      },
+      {
         path: '/admin/aparence',
         element: (
           <Private>
@@ -62,6 +70,10 @@ const router = createBrowserRouter([
       {
         path: '/login',
         element: <Login />,
+      },
+      {
+        path: '/register',
+        element: <Register />,
       },
     ],
   }

@@ -106,6 +106,13 @@ export function Login() {
                     className="w-full h-11 rounded-xl bg-primary-900 text-secondary-white font-bold transition-colors hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-70">
                     {isSubmitting ? "Entrando..." : "Acessar"}
                 </button>
+
+                <p className="text-center text-sm text-secondary-gray">
+                    Ainda não tem conta?{" "}
+                    <Link to="/register" className="font-semibold text-primary-700 hover:text-primary-500">
+                        Criar conta
+                    </Link>
+                </p>
                     </form>
                 </div>
             </div>
