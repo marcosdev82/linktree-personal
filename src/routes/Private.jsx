@@ -1,42 +1,31 @@
-import { auth } from "../services/firebaseConnection";
-import { onAuthStateChanged } from "firebase/auth";
-import { useEffect, useState, type ReactNode } from "react";
-import type { User } from "firebase/auth";
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router";
+import { fetchCurrentUser } from "../services/auth";
 
-interface PrivatesProps {
-    children: ReactNode;
-}
-
-export function Private({children}: PrivatesProps): ReactNode {
+export function Private({children}) {
 
     const [loading, setLoading] = useState(true);
     const [signedIn, setSignedIn] = useState(false);
 
     useEffect(() => {
-        const unsub = onAuthStateChanged(auth, (user: User | null) => {
+        let isMounted = true;
+
+        void fetchCurrentUser().then((user) => {
+            if (!isMounted) return;
+
             if (user) {
-                 const userData = {
-                    uid: user?.uid,
-                    email: user?.email,
-                    displayName: user?.displayName,
-                    photoURL: user.photoURL
-                }
-                console.log("User is logged in:", userData)
-
-                localStorage.setItem("@linktree", JSON.stringify(userData))
-
-
-                setSignedIn(true)
-                setLoading(false)   
+                localStorage.setItem("@linktree", JSON.stringify(user));
+                setSignedIn(true);
             } else {
-                setSignedIn(false)
-                setLoading(false)
+                setSignedIn(false);
             }
-        })
 
-        return () => unsub();
-        
+            setLoading(false);
+        });
+
+        return () => {
+            isMounted = false;
+        };
     }, [])
 
     if (loading) {

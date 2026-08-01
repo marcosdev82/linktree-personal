@@ -1,19 +1,16 @@
 import { Link, useNavigate } from "react-router"
 import { Input } from "../../compents/Imput"
-import { useState, type FormEventHandler } from "react"
-
-// @ts-ignore
-import { auth } from "../../services/firebaseConnection"
-import { signInWithEmailAndPassword } from "firebase/auth"
+import { useState } from "react"
+import { loginWithEmailAndPassword } from "../../services/auth"
 
 export function Login() {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [feedback, setFeedback] = useState<string | null>(null)
+    const [feedback, setFeedback] = useState(null)
     const navigation = useNavigate()
 
-    const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault()
 
         if (email === "" || password === "") {
@@ -22,9 +19,8 @@ export function Login() {
             return
         }
 
-        signInWithEmailAndPassword(auth, email, password)
+        loginWithEmailAndPassword(email, password)
             .then(() => {
-                // Signed in
                 console.log("User logged in:")
                 navigation("/admin", { replace: true })
 

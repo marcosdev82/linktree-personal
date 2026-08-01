@@ -1,7 +1,7 @@
 import { FaArrowRight, FaBook, FaCamera, FaEnvelope, FaFileLines, FaGlobe, FaGithub, FaInstagram, FaLink, FaLinkedin, FaMusic, FaPlay, FaRocket, FaShareNodes, FaWhatsapp } from "react-icons/fa6";
 import { Social } from "../../compents/Social";
-import { useEffect, useMemo, useState, type CSSProperties } from "react";
-import { getLinktreeConfig, loadLinktreeConfigFromFirebase, type ButtonEffect, type LinktreeConfig } from "../../services/firebase";
+import { useEffect, useMemo, useState } from "react";
+import { getLinktreeConfig, loadLinktreeConfigFromFirebase } from "../../services/firebase";
 
 const buttonIconComponents = {
     "arrow-right": FaArrowRight,
@@ -20,7 +20,7 @@ const buttonIconComponents = {
     rocket: FaRocket,
 };
 
-function getButtonEffectStyle(effect: ButtonEffect, isHovered: boolean): CSSProperties {
+function getButtonEffectStyle(effect, isHovered) {
     if (!isHovered) {
         return {
             transform: "translateY(0)",
@@ -72,8 +72,8 @@ async function handleShare() {
 }
 
 export function Home() {    
-    const [hoveredButtonId, setHoveredButtonId] = useState<string | null>(null);
-    const [config, setConfig] = useState<LinktreeConfig>(() => getLinktreeConfig());
+    const [hoveredButtonId, setHoveredButtonId] = useState(null);
+    const [config, setConfig] = useState(() => getLinktreeConfig());
 
     useEffect(() => {
         let isMounted = true;
@@ -153,7 +153,7 @@ export function Home() {
                                 <div className="flex items-center gap-3">
                                     <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/15 text-sm">
                                         {(() => {
-                                            const Icon = buttonIconComponents[button.icon as keyof typeof buttonIconComponents] ?? FaArrowRight;
+                                            const Icon = buttonIconComponents[button.icon] ?? FaArrowRight;
                                             return <Icon aria-hidden="true" />;
                                         })()}
                                     </span>

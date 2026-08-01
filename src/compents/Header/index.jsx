@@ -1,14 +1,12 @@
 import { BiLogOut } from "react-icons/bi"
 import { Link } from "react-router"
 
-import { auth } from "../../services/firebaseConnection"
-import { signOut } from "firebase/auth"
+import { logout } from "../../services/auth"
 
 export function Header() {
 
     async function handleLogout() {
-        await signOut(auth)
-        localStorage.removeItem("@linktree")
+        logout()
     }
 
     return (

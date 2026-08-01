@@ -1,11 +1,4 @@
-import { type ReactNode } from 'react'
-
-interface ButtonLinkProps{
-    url: string;
-    children: ReactNode;
-}
-
-export function ButtonSectionLink({url, children}: ButtonLinkProps) {
+export function ButtonSectionLink({url, children}) {
    return  (
     <section className="w-full">
         <a  
