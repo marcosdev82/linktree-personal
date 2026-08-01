@@ -22,12 +22,18 @@
 
 html,
 body {
-  min-height: 100%;
+  height: 100%;
   margin: 0;
+  overflow: hidden;
+}
+
+#root {
+  height: 100%;
+  overflow: hidden;
 }
 
 body {
-  min-height: 100vh;
+  min-height: 100%;
   background: linear-gradient(180deg, #408F60 0%, #9FE9C9 100%);
   font-family: "DM Sans", sans-serif;
 }

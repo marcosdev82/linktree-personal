@@ -30,7 +30,7 @@ export function Private({children}) {
 
     if (loading) {
         return (
-            <div className="flex w-full h-screen items-center justify-center px-4">
+            <div className="flex h-full min-h-0 w-full items-center justify-center px-4">
                 <div className="w-full max-w-sm rounded-2xl border border-green-100 bg-white/85 p-8 text-center shadow-lg backdrop-blur-sm">
                     <h1 className="flex items-center justify-center text-black md:text-4xl text-5xl font-black">
                         Pixel<span

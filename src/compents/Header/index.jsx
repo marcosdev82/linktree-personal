@@ -13,7 +13,7 @@ export function Header() {
     }
 
     return (
-        <header className="fixed left-0 top-0 z-50 flex h-14 w-full items-center justify-between bg-primary-900 px-3 text-secondary-white shadow-md">
+        <header className="fixed left-0 top-0 z-50 flex h-14 w-full items-center justify-between bg-primary-900 px-3 text-secondary-white">
 
             <Link to="/">
                 <h1 className="flex origin-left scale-90 items-center text-2xl font-black text-secondary-white md:text-3xl">
