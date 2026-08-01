@@ -13,10 +13,10 @@ export function Header() {
     }
 
     return (
-        <header className="w-full bg-primary-900 text-secondary-white shadow-md flex justify-between items-center px-4 py-2">
+        <header className="fixed left-0 top-0 z-50 flex h-14 w-full items-center justify-between bg-primary-900 px-3 text-secondary-white shadow-md">
 
             <Link to="/">
-                <h1 className="flex items-center mt-11 md:text-4xl text-5xl font-black text-secondary-white">
+                <h1 className="flex origin-left scale-90 items-center text-2xl font-black text-secondary-white md:text-3xl">
                     Pixel<span
                         className="flex bg-linear-to-r from-primary-300 to-primary-100 bg-clip-text text-transparent"
                     >Sync</span>

@@ -44,18 +44,24 @@ export function Login() {
     }
 
     return (
-        <div className="flex w-full h-screen items-center justify-center flex-col">
-            <Link to="/">
-                <h1 className="flex items-center mt-11 text-black md:text-4xl text-5xl font-black">
-                    Pixel<span
-                        className="flex bg-linear-to-r from-green-800 to-green-600 bg-clip-text text-transparent"
-                    >Sync</span>
-                </h1>
-            </Link>
+        <div className="min-h-screen w-full bg-linear-to-br from-primary-900 via-primary-700 to-primary-500 px-4 py-10">
+            <div className="mx-auto flex min-h-[calc(100vh-5rem)] w-full max-w-md items-center justify-center">
+                <div className="w-full rounded-3xl border border-secondary-white/15 bg-secondary-white/95 p-8 shadow-2xl shadow-black/20 backdrop-blur-sm">
+                    <Link to="/" className="block text-center">
+                        <h1 className="flex items-center justify-center text-4xl font-black text-secondary-black">
+                            Pixel<span className="bg-linear-to-r from-primary-700 to-primary-300 bg-clip-text text-transparent">
+                                Sync
+                            </span>
+                        </h1>
+                    </Link>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full max-w-sm mt-8 p-2">
+                    <p className="mt-3 text-center text-sm text-secondary-gray">
+                        Acesse o painel com sua conta.
+                    </p>
+
+                    <form onSubmit={handleSubmit(onSubmit)} className="mt-8 flex flex-col gap-4">
                 {feedback && (
-                    <div className="w-full rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700 shadow-sm animate-[pulse_0.8s_ease-in-out_1]">
+                    <div className="w-full rounded-lg border border-secondary-red/20 bg-secondary-red/10 px-3 py-2 text-sm text-secondary-red shadow-sm animate-[pulse_0.8s_ease-in-out_1]">
                         <span className="font-semibold">Atenção:</span> {feedback}
                     </div>
                 )}
@@ -63,28 +69,32 @@ export function Login() {
                 <Input
                     type="email"
                     placeholder="Digite seu email"
+                    className="border-secondary-lightGray bg-secondary-white focus:border-primary-500 focus:ring-primary-200"
                     {...register("email")}
                 />
                 {errors.email && (
-                    <span className="text-sm text-red-600">{errors.email.message}</span>
+                    <span className="text-sm text-secondary-red">{errors.email.message}</span>
                 )}
 
                 <Input
                     type="password"
                     placeholder="*******"
+                    className="border-secondary-lightGray bg-secondary-white focus:border-primary-500 focus:ring-primary-200"
                     {...register("password")}
                 />
                 {errors.password && (
-                    <span className="text-sm text-red-600">{errors.password.message}</span>
+                    <span className="text-sm text-secondary-red">{errors.password.message}</span>
                 )}
 
                 <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full h-9 rounded-lg bg-green-600 text-white font-bold hover:bg-green-700 transition-colors disabled:cursor-not-allowed disabled:opacity-70">
+                    className="w-full h-11 rounded-xl bg-primary-900 text-secondary-white font-bold transition-colors hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-70">
                     {isSubmitting ? "Entrando..." : "Acessar"}
                 </button>
-            </form>
+                    </form>
+                </div>
+            </div>
         </div>
     )
 }

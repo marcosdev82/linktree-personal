@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from 'react-router';
+import { createBrowserRouter, Outlet, RouterProvider } from 'react-router';
 
 import { Home } from './pages/home';
 import { Admin } from './pages/admin';
@@ -6,27 +6,64 @@ import { Login } from './pages/login';
 import { Networks } from './pages/networks';
 import { Aparence } from './pages/aparence';
 import { Private } from './routes/Private';
+import { Header } from './compents/Header';
+import { Container } from './compents/Layout/Container';
+import { NaviSidebar } from './compents/NavSidebar';
+
+function AppLayout() {
+  return (
+    <>
+      <Header />
+      <Container>
+        <NaviSidebar />
+        <Outlet />
+      </Container>
+    </>
+  );
+}
+
+function AuthLayout() {
+  return <Outlet />;
+}
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: <Home />
+    element: <AppLayout />,
+    children: [
+      {
+        path: '/',
+        element: <Home />,
+      },
+      {
+        path: '/admin',
+        element: (
+            <Admin />
+        ),
+      },
+      {
+        path: '/admin/social',
+        element: (
+            <Networks />
+        ),
+      },
+      {
+        path: '/admin/aparence',
+        element: (
+          <Private>
+            <Aparence />
+          </Private>
+        ),
+      },
+    ],
   },
   {
-    path: '/admin',
-    element: <Private><Admin /></Private>
-  },
-  {
-    path: '/login',
-    element: <Login />
-  },
-  {
-    path: '/admin/social',
-    element: <Private><Networks /></Private>
-  },
-  {
-    path: '/admin/aparence',
-    element: <Private><Aparence /></Private>
+    element: <AuthLayout />,
+    children: [
+      {
+        path: '/login',
+        element: <Login />,
+      },
+    ],
   }
 ]);
 
