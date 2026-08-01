@@ -1,5 +1,5 @@
 import { Avatar } from "../../compents/Avatar/indext";
-import { Navegation } from "../../compents/Navegation";
+import { Navegation } from "../../compents/Navibar";
 import { useMemo, useState } from "react";
 
 export function Aparence() {

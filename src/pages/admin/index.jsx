@@ -1,5 +1,5 @@
  
-import { Navegation } from "../../compents/Navegation";
+import { Navegation } from "../../compents/Navibar";
 
 export function Admin() {
     return (

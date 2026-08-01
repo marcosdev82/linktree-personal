@@ -1,24 +1,33 @@
 import { Link, useNavigate } from "react-router"
 import { Input } from "../../compents/Imput"
 import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
 import { loginWithEmailAndPassword } from "../../services/auth"
 
-export function Login() {
+const loginSchema = z.object({
+    email: z.email("Digite um e-mail válido."),
+    password: z.string().min(6, "A senha precisa ter pelo menos 6 caracteres."),
+})
 
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+export function Login() {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+    } = useForm({
+        resolver: zodResolver(loginSchema),
+        defaultValues: {
+            email: "",
+            password: "",
+        },
+    })
+
     const [feedback, setFeedback] = useState(null)
     const navigation = useNavigate()
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-
-        if (email === "" || password === "") {
-            setFeedback("Preencha todos os campos para continuar.")
-            setTimeout(() => setFeedback(null), 3000)
-            return
-        }
-
+    const onSubmit = ({ email, password }) => {
         loginWithEmailAndPassword(email, password)
             .then(() => {
                 console.log("User logged in:")
@@ -44,31 +53,36 @@ export function Login() {
                 </h1>
             </Link>
 
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full max-w-sm mt-8 p-2">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full max-w-sm mt-8 p-2">
                 {feedback && (
                     <div className="w-full rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700 shadow-sm animate-[pulse_0.8s_ease-in-out_1]">
                         <span className="font-semibold">Atenção:</span> {feedback}
                     </div>
                 )}
 
-                <Input 
+                <Input
                     type="email"
                     placeholder="Digite seu email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    {...register("email")}
                 />
+                {errors.email && (
+                    <span className="text-sm text-red-600">{errors.email.message}</span>
+                )}
 
-                <Input 
+                <Input
                     type="password"
                     placeholder="*******"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    {...register("password")}
                 />
+                {errors.password && (
+                    <span className="text-sm text-red-600">{errors.password.message}</span>
+                )}
 
-                <button 
+                <button
                     type="submit"
-                    className="w-full h-9 rounded-lg bg-green-600 text-white font-bold hover:bg-green-700 transition-colors">
-                    Acessar
+                    disabled={isSubmitting}
+                    className="w-full h-9 rounded-lg bg-green-600 text-white font-bold hover:bg-green-700 transition-colors disabled:cursor-not-allowed disabled:opacity-70">
+                    {isSubmitting ? "Entrando..." : "Acessar"}
                 </button>
             </form>
         </div>
