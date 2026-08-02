@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router";
-import { fetchCurrentUser } from "../services/auth";
+//import { fetchCurrentUser } from "../services/auth";
 
 export function Private({children}) {
 
@@ -10,18 +10,18 @@ export function Private({children}) {
     useEffect(() => {
         let isMounted = true;
 
-        void fetchCurrentUser().then((user) => {
-            if (!isMounted) return;
-
-            if (user) {
-                localStorage.setItem("@linktree", JSON.stringify(user));
-                setSignedIn(true);
-            } else {
-                setSignedIn(false);
-            }
-
-            setLoading(false);
-        });
+        // void fetchCurrentUser().then((user) => {
+        // //     if (!isMounted) return;
+        //
+        // //     if (user) {
+        // //         localStorage.setItem("@linktree", JSON.stringify(user));
+        // //         setSignedIn(true);
+        // //     } else {
+        // //         setSignedIn(false);
+        // //     }
+        //
+        // //     setLoading(false);
+        // });
 
         return () => {
             isMounted = false;

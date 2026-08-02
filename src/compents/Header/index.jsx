@@ -1,7 +1,7 @@
 import { BiLogOut } from "react-icons/bi"
 import { Link } from "react-router"
 
-import { logout } from "../../services/auth"
+// import { logout } from "../../services/auth"
 import { Navibar } from "../Navibar"
 
  
@@ -9,7 +9,7 @@ import { Navibar } from "../Navibar"
 export function Header() {
 
     async function handleLogout() {
-        logout()
+        //logout()
     }
 
     return (

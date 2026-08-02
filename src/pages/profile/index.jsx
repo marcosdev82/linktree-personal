@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { UploadAvatar } from "../../compents/UploadAvatar";
-import { fetchCurrentUser, updateCurrentUserProfile } from "../../services/auth";
+//import { fetchCurrentUser, updateCurrentUserProfile } from "../../services/auth";
 
 // const initialProfile = {
 //     _id: "6a6d0af2ab1e591eff10bf40",
@@ -26,13 +26,13 @@ export function ProfilePage() {
     useEffect(() => {
         let mounted = true;
 
-        void fetchCurrentUser().then((user) => {
-            if (!mounted || !user) return;
-            setProfile((prev) => ({
-                ...prev,
-                ...user,
-            }));
-        });
+        // void fetchCurrentUser().then((user) => {
+        //     if (!mounted || !user) return;
+        //     setProfile((prev) => ({
+        //         ...prev,
+        //         ...user,
+        //     }));
+        // });
 
         return () => {
             mounted = false;
@@ -90,14 +90,14 @@ export function ProfilePage() {
         setFeedbackMessage("");
 
         try {
-            const response = await updateCurrentUserProfile({
-                id: profile._id,
-                name: profile.name,
-                email: profile.email,
-                bio: profile.bio,
-                avatarFile,
-                avatar: profile.avatar,
-            });
+            // const response = await updateCurrentUserProfile({
+            //     id: profile._id,
+            //     name: profile.name,
+            //     email: profile.email,
+            //     bio: profile.bio,
+            //     avatarFile,
+            //     avatar: profile.avatar,
+            // });
 
             const updatedUser = response?.user;
             if (updatedUser) {

@@ -1,67 +1,33 @@
-import { Link, useNavigate } from "react-router";
+import { useState, useContext } from "react";
+import { Link } from "react-router";
 import { Input } from "../../compents/Imput";
-import { useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { registerWithEmailAndPassword } from "../../services/auth";
 
-const registerSchema = z
-  .object({
-    name: z.string().min(3, "Informe seu nome com pelo menos 3 caracteres."),
-    email: z.email("Digite um e-mail válido."),
-    password: z.string().min(6, "A senha precisa ter pelo menos 6 caracteres."),
-    confirmPassword: z.string().min(6, "Confirme a senha com pelo menos 6 caracteres."),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "As senhas não coincidem.",
-    path: ["confirmPassword"],
-  });
+/** Contexts */
+import { Context } from "../../contexts/UserContext";
 
 export function Register() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm({
-    resolver: zodResolver(registerSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    },
-  });
 
-  const [feedback, setFeedback] = useState(null);
-  const [shake, setShake] = useState(false);
-  const shakeTimeoutRef = useRef(null);
-  const navigation = useNavigate();
+  const [user, setUser] = useState({})
+  const { register } = useContext(Context);
+  const shake = false
 
-  function triggerShake() {
-    setShake(false);
-    setShake(true);
-
-    if (shakeTimeoutRef.current) {
-      window.clearTimeout(shakeTimeoutRef.current);
-    }
-
-    shakeTimeoutRef.current = window.setTimeout(() => setShake(false), 450);
+  
+  function handleChange(e) {
+    setUser({
+        ...user,
+        [e.target.name]: e.target.value,
+    });
+  }
+  function handleSubmit(e) {
+    e.preventDefault();
+    register(user)
   }
 
-  const onSubmit = ({ name, email, password, confirmPassword }) => {
-    registerWithEmailAndPassword({ name, email, password, confirmPassword })
-      .then(() => {
-        navigation("/admin", { replace: true });
-      })
-      .catch((error) => {
-        const message = error?.response?.data?.message || "Não foi possível criar sua conta.";
-        setFeedback(message);
-        triggerShake();
-        setTimeout(() => setFeedback(null), 4000);
-      });
-  };
+  function isSubmitting() {
+    return !user.name || !user.email || !user.password || !user.confirmPassword
+  }
 
+ 
   return (
     <div className="min-h-screen w-full bg-linear-to-br from-primary-900 via-primary-700 to-primary-500 px-4 py-10">
       <div className="mx-auto flex min-h-[calc(100vh-5rem)] w-full max-w-md items-center justify-center">
@@ -81,50 +47,54 @@ export function Register() {
 
           <p className="mt-3 text-center text-sm text-secondary-gray">Crie sua conta para começar.</p>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="mt-8 flex flex-col gap-4">
-            {feedback && (
+          <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-4">
+            {/* {feedback && (
               <div className="w-full rounded-lg border border-secondary-red/20 bg-secondary-red/10 px-3 py-2 text-sm text-secondary-red shadow-sm animate-[pulse_0.8s_ease-in-out_1]">
                 <span className="font-semibold">Atenção:</span> {feedback}
               </div>
-            )}
+            )} */}
 
             <Input
               type="text"
+              name="name"
               placeholder="Seu nome"
               className="border-secondary-lightGray bg-secondary-white focus:border-primary-500 focus:ring-primary-200"
-              {...register("name")}
+              onChange={handleChange}
             />
-            {errors.name && <span className="text-sm text-secondary-red">{errors.name.message}</span>}
+            {/* {errors.name && <span className="text-sm text-secondary-red">{errors.name.message}</span>} */}
 
             <Input
               type="email"
+              name="email"
               placeholder="Digite seu email"
               className="border-secondary-lightGray bg-secondary-white focus:border-primary-500 focus:ring-primary-200"
-              {...register("email")}
+              onChange={handleChange}
             />
-            {errors.email && <span className="text-sm text-secondary-red">{errors.email.message}</span>}
+            {/* {errors.email && <span className="text-sm text-secondary-red">{errors.email.message}</span>} */}
 
             <Input
               type="password"
+              name="password"
               placeholder="Senha"
               className="border-secondary-lightGray bg-secondary-white focus:border-primary-500 focus:ring-primary-200"
-              {...register("password")}
+              onChange={handleChange}
             />
-            {errors.password && <span className="text-sm text-secondary-red">{errors.password.message}</span>}
+            {/* {errors.password && <span className="text-sm text-secondary-red">{errors.password.message}</span>} */}
 
             <Input
               type="password"
+              name="confirmPassword"
               placeholder="Confirmar senha"
               className="border-secondary-lightGray bg-secondary-white focus:border-primary-500 focus:ring-primary-200"
-              {...register("confirmPassword")}
+              onChange={handleChange}
             />
-            {errors.confirmPassword && (
+            {/* {errors.confirmPassword && (
               <span className="text-sm text-secondary-red">{errors.confirmPassword.message}</span>
-            )}
+            )} */}
 
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting()}
               className="h-11 w-full rounded-xl bg-primary-900 font-bold text-secondary-white transition-colors hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-70"
             >
               {isSubmitting ? "Criando conta..." : "Criar conta"}

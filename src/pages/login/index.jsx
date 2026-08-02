@@ -4,7 +4,7 @@ import { useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { loginWithEmailAndPassword } from "../../services/auth"
+//import { loginWithEmailAndPassword } from "../../services/auth"
 
 const loginSchema = z.object({
     email: z.email("Digite um e-mail válido."),
@@ -41,20 +41,20 @@ export function Login() {
     }
 
     const onSubmit = ({ email, password }) => {
-        loginWithEmailAndPassword(email, password)
-            .then(() => {
-                console.log("User logged in:")
-                navigation("/admin", { replace: true })
+        // loginWithEmailAndPassword(email, password)
+        //     .then(() => {
+        //         console.log("User logged in:")
+        //         navigation("/admin", { replace: true })
 
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.error("Error logging in:", errorCode, errorMessage)
-                setFeedback("E-mail ou senha inválidos. Tente novamente.")
-                triggerShake()
-                setTimeout(() => setFeedback(null), 4000)
-            });
+        //     })
+        //     .catch((error) => {
+        //         const errorCode = error.code;
+        //         const errorMessage = error.message;
+        //         console.error("Error logging in:", errorCode, errorMessage)
+        //         setFeedback("E-mail ou senha inválidos. Tente novamente.")
+        //         triggerShake()
+        //         setTimeout(() => setFeedback(null), 4000)
+        //     });
     }
 
     return (
