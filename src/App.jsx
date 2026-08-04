@@ -1,6 +1,7 @@
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router';
 import { UserProvider } from './contexts/UserContext';
 
+/** pages */
 import { Home } from './pages/home';
 import { Admin } from './pages/admin';
 import { Login } from './pages/login';
@@ -10,6 +11,8 @@ import { Aparence } from './pages/aparence';
 import { ProfilePage } from './pages/profile';
 import { Private } from './routes/Private';
 import { Header } from './compents/Header';
+
+/** componentes */
 import { Container } from './compents/Layout/Container';
 import { NaviSidebar } from './compents/NavSidebar';
 import { Preview } from './compents/Preview';
