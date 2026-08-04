@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { bus } from "../../utils/bus";
+import React, { useEffect, useState } from "react";
+import bus from "../../utils/bus";
 
 function Message() {
 
@@ -8,8 +8,7 @@ function Message() {
     const [message, setMessage] = useState('')
     
     useEffect(() => {
- 
-        bus.addEventListener("flash", ({message, type}) => {
+        const handleFlash = ({ message, type }) => {
             setVisible(true)
             setType(type)
             setMessage(message)
@@ -17,16 +16,24 @@ function Message() {
             setTimeout(() => {
                 setVisible(false)
             }, 3000)
-        })
+        }
+
+        bus.addEventListener("flash", handleFlash)
+
+        return () => {
+            bus.removeEventListener("flash", handleFlash)
+        }
         
     }, [])
 
-    return (
-       visible && (
-        <div className={`message ${type}`}>
-            {message}
-        </div>
-       )
+    if (!visible) {
+        return null
+    }
+
+    return React.createElement(
+        "div",
+        { className: `message ${type}` },
+        message
     )
 
 

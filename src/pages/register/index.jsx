@@ -97,7 +97,7 @@ export function Register() {
               disabled={isSubmitting()}
               className="h-11 w-full rounded-xl bg-primary-900 font-bold text-secondary-white transition-colors hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-70"
             >
-              {isSubmitting ? "Criando conta..." : "Criar conta"}
+              {isSubmitting() ? "Criando conta..." : "Criar conta"}
             </button>
 
             <p className="text-center text-sm text-secondary-gray">

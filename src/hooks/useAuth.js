@@ -1,7 +1,7 @@
 import auth from "../services/auth"
 
 import { useEffect, useState } from "react"
-import { useFlashMessage } from "./useFlashMessage"
+import useFlashMessage from "./useFlashMessage"
 
 export default function useAuth() {
 

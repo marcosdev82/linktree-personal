@@ -16,6 +16,7 @@ import { Header } from './compents/Header';
 import { Container } from './compents/Layout/Container';
 import { NaviSidebar } from './compents/NavSidebar';
 import { Preview } from './compents/Preview';
+import Message from './compents/Message';
 
 function AppLayout() {
   return (
@@ -31,7 +32,12 @@ function AppLayout() {
 }
 
 function AuthLayout() {
-  return <Outlet />;
+  return (
+    <>
+      <Message />
+      <Outlet />
+    </>
+  );
 }
 
 const router = createBrowserRouter([
